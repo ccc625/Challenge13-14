@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="com.example.challenge13.MainActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnPrev"
+            android:text="이전"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txtMonth"
+            android:text="      MonthText      "
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:text="다음"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <com.example.challenge13.CalendarMonthView
+        android:id="@+id/calendarMonthView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.example.challenge13.CalendarMonthView>
+
+    <Button
+        android:id="@+id/btnSaveWeather"
+        android:text="오늘 날씨 저장"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
