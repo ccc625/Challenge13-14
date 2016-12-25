@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -44,6 +45,8 @@ public class PlanDialogActivity extends AppCompatActivity
     private int selectedYear;
     private int selectedMonth;
     private int selectedDay;
+
+    private int dayTerm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -111,11 +114,18 @@ public class PlanDialogActivity extends AppCompatActivity
 
         responseListener = new OnResponseListener() {
             @Override
-            public void onResponseGetListener(ArrayList<WeatherData> responseWeather)
+            public void onResponseGetListener(int code, ArrayList<WeatherData> responseWeather)
             {
-                weatherDataArrayList = responseWeather;
+                if( code == HttpURLConnection.HTTP_OK )
+                {
+                    weatherDataArrayList = responseWeather;
 
-                selectedWeather = convertCloudyString( weatherDataArrayList.get(0).getCloudy() );
+                    selectedWeather = convertCloudyString(weatherDataArrayList.get(dayTerm).getCloudy());
+                }
+                else
+                {
+                    selectedWeather = "";
+                }
                 setWeather();
             }
         };
@@ -139,6 +149,7 @@ public class PlanDialogActivity extends AppCompatActivity
 
         Date now = new Date();
         Date selected = new Date( Date.UTC(selectedYear, selectedMonth, selectedDay, 0, 0, 0) );
+        dayTerm = selected.getDate() - now.getDate();
 
         selectedWeather = "";
 
@@ -162,9 +173,10 @@ public class PlanDialogActivity extends AppCompatActivity
             txtMinute.setText( min );
         }
 
-        if( weather != null && !weather.equals("") )
+        if( ( weather != null && !weather.equals("") ) || ( dayTerm < 0 || dayTerm > 14 ) )
         {
-            selectedWeather = weather;
+            if( weather != null )
+                selectedWeather = weather;
             setWeather();
         }
         else
