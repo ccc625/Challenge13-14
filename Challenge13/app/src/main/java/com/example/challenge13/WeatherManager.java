@@ -25,6 +25,7 @@ public class WeatherManager
     private static final String key = "dc49382e1dcc49fa2a8bbd3af97f05d0";
 
     private OnResponseListener responseListener;
+    int currentResCode;
 
     public Handler handler;
 
@@ -66,27 +67,30 @@ public class WeatherManager
                     public void run()
                     {
                         ///NOTE @jimin API콜에대한 응답을 받게되면 파싱과정을 거친 후 listener를 호출 한다.
-                        Element element = output.getDocumentElement();
-                        Element forecast = (Element) element.getElementsByTagName("forecast").item(0);
-                        NodeList times = forecast.getElementsByTagName("time");
-
                         ArrayList<WeatherData> weatherDataArrayList = new ArrayList<WeatherData>();
-                        WeatherData weatherDayData;
-                        for(int i = 0; i < times.getLength(); i++)
+
+                        if( output != null )
                         {
-                            Element time = (Element) times.item(i);
-                            Element symbol = (Element) time.getElementsByTagName("symbol").item(0);
+                            Element element = output.getDocumentElement();
+                            Element forecast = (Element) element.getElementsByTagName("forecast").item(0);
+                            NodeList times = forecast.getElementsByTagName("time");
 
-                            weatherDayData = new WeatherData();
-                            weatherDayData.setDay( time.getAttribute("day") );
-                            weatherDayData.setCloudy( symbol.getAttribute("name") );
+                            WeatherData weatherDayData;
+                            for (int i = 0; i < times.getLength(); i++) {
+                                Element time = (Element) times.item(i);
+                                Element symbol = (Element) time.getElementsByTagName("symbol").item(0);
 
-                            weatherDataArrayList.add(weatherDayData);
+                                weatherDayData = new WeatherData();
+                                weatherDayData.setDay(time.getAttribute("day"));
+                                weatherDayData.setCloudy(symbol.getAttribute("name"));
+
+                                weatherDataArrayList.add(weatherDayData);
+                            }
+                            weatherDayData = null;
                         }
-                        weatherDayData = null;
 
                         if( responseListener != null )
-                            responseListener.onResponseGetListener(weatherDataArrayList);
+                            responseListener.onResponseGetListener(currentResCode, weatherDataArrayList);
                     }
                 });
             }
@@ -116,10 +120,9 @@ public class WeatherManager
 
                     int resCode = conn.getResponseCode();
 
-                    if( resCode == HttpURLConnection.HTTP_OK )
-                    {
-                        document = builder.parse( conn.getInputStream() );
-                    }
+                    currentResCode = resCode;
+
+                    document = builder.parse( conn.getInputStream() );
                 }
             }
             catch (Exception ex)
