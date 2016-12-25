@@ -11,5 +11,5 @@ import java.util.ArrayList;
 ///NOTE @jimin API콜에 대한 응답이 들어왔을 때 호출되는 Listener
 public interface OnResponseListener
 {
-    public void onResponseGetListener(ArrayList<WeatherData> responseWeather);
+    public void onResponseGetListener(int code, ArrayList<WeatherData> responseWeather);
 }
