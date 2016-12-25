@@ -192,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void openDialogActivity()
     {
-        if( currentLocation == null )
-            return;
+        String lat;
+        String lon;
 
         String key = curYear + "/" + curMonth + "/" + currentSelectedDay.getDay();
         DayData dayData = (DayData) hashData.get(key);
@@ -208,8 +208,19 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("weather", dayData.getWeather());
         }
 
-        intent.putExtra( "latitude", String.valueOf( currentLocation.getLatitude() ) );
-        intent.putExtra( "longitude", String.valueOf( currentLocation.getLongitude() ) );
+        if( currentLocation == null)
+        {
+            lat = "36.1444292";
+            lon = "128.3010799";
+        }
+        else
+        {
+            lat = String.valueOf( currentLocation.getLatitude() );
+            lon = String.valueOf( currentLocation.getLongitude() );
+        }
+
+        intent.putExtra( "latitude", lat );
+        intent.putExtra( "longitude", lon );
         intent.putExtra( "year", curYear );
         intent.putExtra( "month", curMonth );
         intent.putExtra( "day", currentSelectedDay.getDay() );
